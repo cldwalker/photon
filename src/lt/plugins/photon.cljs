@@ -19,7 +19,7 @@
     (map #(hash-map :name (files/basename %) :path (files/join path %))
          children)))
 
-(defn items []
+(defn add-items []
   (->> @directories
        (map expand-path)
        (mapcat ->items)
@@ -27,16 +27,29 @@
        (sort-by :name)))
 
 (def add-selector
-  (selector/selector {:items items
+  (selector/selector {:items add-items
                       :key :name
                       :transform #(str "<p>" %3 "</p><p class='binding'>" (:path %4) "</p>")}))
 
 (cmd/command {:command :photon.add-folder
-              :desc "photon: Add folder from dropdown"
+              :desc "photon: Select folder to add"
               :options add-selector
               :exec (fn [item]
                       (object/raise workspace/current-ws :add.folder! (:path item)))})
 
+(def remove-selector
+  (selector/selector {:items (fn []
+                               (map
+                                #(hash-map :path % :name (files/basename %))
+                                (:folders @workspace/current-ws)))
+                      :key :name
+                      :transform #(str "<p>" %3 "</p><p class='binding'>" (:path %4) "</p>")}))
+
+(cmd/command {:command :photon.remove-folder
+              :desc "photon: Select folder to remove"
+              :options remove-selector
+              :exec (fn [item]
+                      (object/raise workspace/current-ws :remove.folder! (:path item)))})
 
 (comment
   (prn @directories)
