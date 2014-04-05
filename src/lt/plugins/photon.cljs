@@ -5,6 +5,7 @@
             [lt.objs.workspace :as workspace]
             [lt.plugins.photon.selector :as selector]
             [lt.objs.plugins :as plugins]
+            [lt.objs.notifos :as notifos]
             [clojure.string :as s])
   (:require-macros [lt.macros :refer [behavior]]))
 
@@ -40,7 +41,8 @@
               :desc "photon: Select folder to add"
               :options add-selector
               :exec (fn [item]
-                      (object/raise workspace/current-ws :add.folder! (:path item)))})
+                      (object/raise workspace/current-ws :add.folder! (:path item))
+                      (notifos/set-msg! (str "Added folder " (:path item))))})
 
 (def remove-selector
   (selector/selector {:items (fn []
@@ -54,7 +56,8 @@
               :desc "photon: Select folder to remove"
               :options remove-selector
               :exec (fn [item]
-                      (object/raise workspace/current-ws :remove.folder! (:path item)))})
+                      (object/raise workspace/current-ws :remove.folder! (:path item))
+                      (notifos/set-msg! (str "Removed folder " (:path item))))})
 
 (comment
   (prn @directories)
