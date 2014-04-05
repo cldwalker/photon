@@ -15,6 +15,7 @@ return G__8296;
 if(!lt.util.load.provided_QMARK_('lt.plugins.photon')) {
 goog.provide('lt.plugins.photon');
 goog.require('cljs.core');
+goog.require('lt.objs.plugins');
 goog.require('lt.objs.files');
 goog.require('clojure.string');
 goog.require('lt.objs.workspace');
@@ -23,26 +24,36 @@ goog.require('lt.plugins.photon.selector');
 goog.require('lt.plugins.photon.selector');
 goog.require('lt.objs.command');
 goog.require('lt.objs.files');
+goog.require('lt.objs.plugins');
 goog.require('clojure.string');
 goog.require('lt.object');
 goog.require('lt.object');
 goog.require('lt.objs.command');
-lt.plugins.photon.directories = cljs.core.atom.call(null,cljs.core.PersistentVector.EMPTY);
+/**
+* Directories to search in for folders to add. Defaults to [:plugins].
+* :plugins is an alias for a user's plugins directory
+*/
+lt.plugins.photon.directories = cljs.core.atom.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"plugins","plugins",538274578)], null));
 lt.plugins.photon.home = lt.objs.files.home.call(null);
 lt.plugins.photon.expand_path = (function expand_path(path){return clojure.string.replace_first.call(null,path,/^~\//,lt.plugins.photon.home);
 });
-lt.plugins.photon.__GT_items = (function __GT_items(path){var children = lt.objs.files.ls_sync.call(null,path,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"dirs","dirs",1016987896),true], null));return cljs.core.map.call(null,(function (p1__8489_SHARP_){return cljs.core.PersistentHashMap.fromArrays.call(null,[new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"path","path",1017337751)],[lt.objs.files.basename.call(null,p1__8489_SHARP_),lt.objs.files.join.call(null,path,p1__8489_SHARP_)]);
+lt.plugins.photon.__GT_items = (function __GT_items(path){var children = lt.objs.files.ls_sync.call(null,path,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"dirs","dirs",1016987896),true], null));return cljs.core.map.call(null,(function (p1__8807_SHARP_){return cljs.core.PersistentHashMap.fromArrays.call(null,[new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"path","path",1017337751)],[lt.objs.files.basename.call(null,p1__8807_SHARP_),lt.objs.files.join.call(null,path,p1__8807_SHARP_)]);
 }),children);
 });
-lt.plugins.photon.add_items = (function add_items(){return cljs.core.sort_by.call(null,new cljs.core.Keyword(null,"name","name",1017277949),cljs.core.mapcat.call(null,lt.plugins.photon.__GT_items,cljs.core.map.call(null,lt.plugins.photon.expand_path,cljs.core.deref.call(null,lt.plugins.photon.directories))));
+lt.plugins.photon.add_items = (function add_items(){return cljs.core.sort_by.call(null,new cljs.core.Keyword(null,"name","name",1017277949),cljs.core.mapcat.call(null,lt.plugins.photon.__GT_items,cljs.core.map.call(null,lt.plugins.photon.expand_path,cljs.core.map.call(null,(function (p1__8808_SHARP_){if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"plugins","plugins",538274578),p1__8808_SHARP_))
+{return lt.objs.plugins.user_plugins_dir;
+} else
+{return [cljs.core.str(p1__8808_SHARP_)].join('');
+}
+}),cljs.core.deref.call(null,lt.plugins.photon.directories)))));
 });
-lt.plugins.photon.add_selector = lt.plugins.photon.selector.selector.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"items","items",1114430258),lt.plugins.photon.add_items,new cljs.core.Keyword(null,"key","key",1014010321),new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"transform","transform",2066570974),(function (p1__8492_SHARP_,p2__8493_SHARP_,p3__8490_SHARP_,p4__8491_SHARP_){return [cljs.core.str("<p>"),cljs.core.str(p3__8490_SHARP_),cljs.core.str("</p><p class='binding'>"),cljs.core.str(new cljs.core.Keyword(null,"path","path",1017337751).cljs$core$IFn$_invoke$arity$1(p4__8491_SHARP_)),cljs.core.str("</p>")].join('');
+lt.plugins.photon.add_selector = lt.plugins.photon.selector.selector.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"items","items",1114430258),lt.plugins.photon.add_items,new cljs.core.Keyword(null,"key","key",1014010321),new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"transform","transform",2066570974),(function (p1__8811_SHARP_,p2__8812_SHARP_,p3__8809_SHARP_,p4__8810_SHARP_){return [cljs.core.str("<p>"),cljs.core.str(p3__8809_SHARP_),cljs.core.str("</p><p class='binding'>"),cljs.core.str(new cljs.core.Keyword(null,"path","path",1017337751).cljs$core$IFn$_invoke$arity$1(p4__8810_SHARP_)),cljs.core.str("</p>")].join('');
 })], null));
 lt.objs.command.command.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"command","command",1964298941),new cljs.core.Keyword(null,"photon.add-folder","photon.add-folder",4332448574),new cljs.core.Keyword(null,"desc","desc",1016984067),"photon: Select folder to add",new cljs.core.Keyword(null,"options","options",4059396624),lt.plugins.photon.add_selector,new cljs.core.Keyword(null,"exec","exec",1017031683),(function (item){return lt.object.raise.call(null,lt.objs.workspace.current_ws,new cljs.core.Keyword(null,"add.folder!","add.folder!",2151595160),new cljs.core.Keyword(null,"path","path",1017337751).cljs$core$IFn$_invoke$arity$1(item));
 })], null));
-lt.plugins.photon.remove_selector = lt.plugins.photon.selector.selector.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"items","items",1114430258),(function (){return cljs.core.map.call(null,(function (p1__8494_SHARP_){return cljs.core.PersistentHashMap.fromArrays.call(null,[new cljs.core.Keyword(null,"path","path",1017337751),new cljs.core.Keyword(null,"name","name",1017277949)],[p1__8494_SHARP_,lt.objs.files.basename.call(null,p1__8494_SHARP_)]);
+lt.plugins.photon.remove_selector = lt.plugins.photon.selector.selector.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"items","items",1114430258),(function (){return cljs.core.map.call(null,(function (p1__8813_SHARP_){return cljs.core.PersistentHashMap.fromArrays.call(null,[new cljs.core.Keyword(null,"path","path",1017337751),new cljs.core.Keyword(null,"name","name",1017277949)],[p1__8813_SHARP_,lt.objs.files.basename.call(null,p1__8813_SHARP_)]);
 }),new cljs.core.Keyword(null,"folders","folders",4625622327).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,lt.objs.workspace.current_ws)));
-}),new cljs.core.Keyword(null,"key","key",1014010321),new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"transform","transform",2066570974),(function (p1__8497_SHARP_,p2__8498_SHARP_,p3__8495_SHARP_,p4__8496_SHARP_){return [cljs.core.str("<p>"),cljs.core.str(p3__8495_SHARP_),cljs.core.str("</p><p class='binding'>"),cljs.core.str(new cljs.core.Keyword(null,"path","path",1017337751).cljs$core$IFn$_invoke$arity$1(p4__8496_SHARP_)),cljs.core.str("</p>")].join('');
+}),new cljs.core.Keyword(null,"key","key",1014010321),new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"transform","transform",2066570974),(function (p1__8816_SHARP_,p2__8817_SHARP_,p3__8814_SHARP_,p4__8815_SHARP_){return [cljs.core.str("<p>"),cljs.core.str(p3__8814_SHARP_),cljs.core.str("</p><p class='binding'>"),cljs.core.str(new cljs.core.Keyword(null,"path","path",1017337751).cljs$core$IFn$_invoke$arity$1(p4__8815_SHARP_)),cljs.core.str("</p>")].join('');
 })], null));
 lt.objs.command.command.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"command","command",1964298941),new cljs.core.Keyword(null,"photon.remove-folder","photon.remove-folder",3454918487),new cljs.core.Keyword(null,"desc","desc",1016984067),"photon: Select folder to remove",new cljs.core.Keyword(null,"options","options",4059396624),lt.plugins.photon.remove_selector,new cljs.core.Keyword(null,"exec","exec",1017031683),(function (item){return lt.object.raise.call(null,lt.objs.workspace.current_ws,new cljs.core.Keyword(null,"remove.folder!","remove.folder!",1531423099),new cljs.core.Keyword(null,"path","path",1017337751).cljs$core$IFn$_invoke$arity$1(item));
 })], null));

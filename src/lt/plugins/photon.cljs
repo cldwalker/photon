@@ -4,10 +4,14 @@
             [lt.objs.command :as cmd]
             [lt.objs.workspace :as workspace]
             [lt.plugins.photon.selector :as selector]
+            [lt.objs.plugins :as plugins]
             [clojure.string :as s])
   (:require-macros [lt.macros :refer [behavior]]))
 
-(def directories (atom []))
+(def directories
+  "Directories to search in for folders to add. Defaults to [:plugins].
+  :plugins is an alias for a user's plugins directory"
+  (atom [:plugins]))
 
 (def home (files/home))
 
@@ -21,6 +25,7 @@
 
 (defn add-items []
   (->> @directories
+       (map #(if (= :plugins %) plugins/user-plugins-dir (str %)))
        (map expand-path)
        (mapcat ->items)
        ;; consider case-insensitive
@@ -54,5 +59,5 @@
 (comment
   (prn @directories)
   (->items (expand-path "~/code/fork"))
-  (items)
-  (reset! directories ["~/code/fork" "/Users/me/code/repo"]))
+  (count (add-items))
+  (reset! directories [:plugins "~/code/fork" "/Users/me/code/repo"]))
