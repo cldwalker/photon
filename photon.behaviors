@@ -1,2 +1,1 @@
-{:+ {:app [(:lt.objs.plugins/load-js "photon_compiled.js")]
-     :photon.hello [:lt.plugins.photon/on-close-destroy]}}
+{:+ {:app [(:lt.objs.plugins/load-js "photon_compiled.js")]}}
