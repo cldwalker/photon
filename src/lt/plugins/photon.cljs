@@ -59,6 +59,16 @@
                       (object/raise workspace/current-ws :remove.folder! (:path item))
                       (notifos/set-msg! (str "Removed folder " (:path item))))})
 
+(behavior ::set-directories
+          :triggers #{:object.instant}
+          :type :user
+          :exclusive true
+          :desc "photon: Set directories to search in"
+          :params [{:label "vec"
+                    :example "[:plugins \"~/another/dir\"]"}]
+          :reaction (fn [this dirs]
+                      (reset! directories dirs)))
+
 (comment
   (prn @directories)
   (->items (expand-path "~/code/fork"))
