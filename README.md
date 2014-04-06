@@ -4,12 +4,12 @@ photon provides a fuzzy finder to open your most active projects. By configuring
 it with the parent directories of those projects, almost anything you work on
 can be keystrokes away.
 
+![Usage Example](example.gif)
+
 ## Install
 
 Install this plugin with LT's plugin manager or clone this project to your LT
 plugins directory.
-
-![Usage Example](example.gif)
 
 ## Usage
 
@@ -52,7 +52,7 @@ example, let's add the parent directories from the Usage example:
 Note that this configuration won't change much since we specify parent directories.
 As we add new projects under them, photon automatically picks up the new projects.
 
-For another behaviors example, [see my configuration](#TODO).
+For another behaviors example, [see my configuration](https://github.com/cldwalker/ltfiles/blob/6390d95ebe71e11c6bc5eb86ac3d01a36b2b34c8/settings/user.behaviors#L93-L95).
 
 Like any command, the commands to add and remove projects can be activated with
 keybindings. For example:
