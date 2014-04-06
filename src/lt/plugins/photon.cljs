@@ -68,9 +68,3 @@
                     :example "[:plugins \"~/another/dir\"]"}]
           :reaction (fn [this dirs]
                       (reset! directories dirs)))
-
-(comment
-  (prn @directories)
-  (->items (expand-path "~/code/fork"))
-  (count (add-items))
-  (reset! directories [:plugins "~/code/fork" "/Users/me/code/repo"]))

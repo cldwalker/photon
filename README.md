@@ -71,3 +71,12 @@ Please report them [on github](http://github.com/cldwalker/photon/issues).
 ## Contributions
 
 [See here](http://tagaholic.me/contributing.html) for contributing guidelines.
+
+## Limitations
+* Currently only adding projects/directories is supported. I didn't have a need for adding files.
+  I'm open to such a pull request as long as everything supports a directory and file.
+* By default, the fuzzy finder shows your last selection which may reflect stale data. To get fresh
+  data, hit backspace or simply start typing.
+
+## License
+See LICENSE.txt
